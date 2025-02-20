@@ -1,23 +1,42 @@
-import logo from './logo.svg';
+
 import './App.css';
+import { useState } from "react";
+import { AddTask } from './components/AddTask';
+import { ToDo } from './components/ToDo';
+
 
 function App() {
+  const [taskList, setTaskList] = useState([]);
+
+  useEffect(()=>{
+    let array = localStorage.getItem("taskList");
+
+    if(array){
+      setTaskList(JSON.parse(array));
+    }
+  },[])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1 className=" text-2xl  py-4 pl-6 font-bold">The Task Tracker</h1>
+      <p className="text-xl pl-6">Hi there</p>
+      <div className="flex flex-row items-center">
+        <p className="text-xl pl-6">Click</p>
+        <AddTask taskList = {taskList}
+              setTaskList = {setTaskList}/>
+        <p className="text-xl my-2">to add task</p>
+      </div>
+      <div >
+        <h1 className="ml-6 text-xl font-semibold w-3/4 
+      max-w-lg my-4 py-2 px-4 bg-gray-200">To Do:</h1>
+      {
+        taskList.map((task,i)=>
+           
+            <ToDo  key={i} task={task} index={i} taskList={taskList} setTaskList = {setTaskList}/>
+
+        )
+      }
+      </div>
     </div>
   );
 }
